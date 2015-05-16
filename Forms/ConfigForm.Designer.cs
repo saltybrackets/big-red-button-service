@@ -49,6 +49,7 @@
 			this.lidClosedShellOption = new System.Windows.Forms.RadioButton();
 			this.lidClosedCommandLabel = new System.Windows.Forms.Label();
 			this.lidClosedCommandTextbox = new System.Windows.Forms.TextBox();
+			this.saveButton = new System.Windows.Forms.Button();
 			this.buttonPressedGroup.SuspendLayout();
 			this.lidOpenedGroup.SuspendLayout();
 			this.lidClosedGroup.SuspendLayout();
@@ -295,15 +296,30 @@
 			this.lidClosedCommandTextbox.TabIndex = 2;
 			this.lidClosedCommandTextbox.Leave += new System.EventHandler(this.lidClosedCommandTextbox_Leave);
 			// 
+			// saveButton
+			// 
+			this.saveButton.Font = new System.Drawing.Font("Microsoft Sans Serif", 8.25F, System.Drawing.FontStyle.Bold, System.Drawing.GraphicsUnit.Point, ((byte)(0)));
+			this.saveButton.Location = new System.Drawing.Point(368, 297);
+			this.saveButton.Name = "saveButton";
+			this.saveButton.Size = new System.Drawing.Size(87, 33);
+			this.saveButton.TabIndex = 9;
+			this.saveButton.Text = "Save";
+			this.saveButton.UseVisualStyleBackColor = true;
+			this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
+			// 
 			// ConfigForm
 			// 
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
-			this.ClientSize = new System.Drawing.Size(467, 307);
+			this.ClientSize = new System.Drawing.Size(467, 337);
+			this.Controls.Add(this.saveButton);
 			this.Controls.Add(this.lidClosedGroup);
 			this.Controls.Add(this.lidOpenedGroup);
 			this.Controls.Add(this.buttonPressedGroup);
+			this.MaximizeBox = false;
+			this.MinimizeBox = false;
 			this.Name = "ConfigForm";
+			this.StartPosition = System.Windows.Forms.FormStartPosition.CenterScreen;
 			this.Text = "Big Red Button Config";
 			this.buttonPressedGroup.ResumeLayout(false);
 			this.buttonPressedGroup.PerformLayout();
@@ -338,6 +354,7 @@
 		private System.Windows.Forms.RadioButton lidClosedShellOption;
 		private System.Windows.Forms.Label lidClosedCommandLabel;
 		private System.Windows.Forms.TextBox lidClosedCommandTextbox;
+		private System.Windows.Forms.Button saveButton;
 	}
 }
 

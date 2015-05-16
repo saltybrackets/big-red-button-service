@@ -11,6 +11,10 @@ namespace BigRedButtonService
 	public class ButtonController
 	{
 
+		#region Constants
+		public const string ConfigFile = "config.ini";
+		#endregion
+
 		#region Fields
 		private static ILog logger = LogManager.GetLogger(typeof (ButtonController));
 
@@ -24,7 +28,7 @@ namespace BigRedButtonService
 		public ButtonController()
 		{
 			this.httpClient = new HttpClient();
-			this.buttonConfig = new ButtonConfig();
+			this.buttonConfig = new ButtonConfig(ConfigFile);
 		}
 		#endregion
 
@@ -54,37 +58,22 @@ namespace BigRedButtonService
 		/// </summary>
 		public void StartMonitor()
 		{
+			
 			// Device found, start listening.
-			try
-			{
-				this.buttonMonitor = new ButtonMonitor();
+			this.buttonMonitor = new ButtonMonitor();
 
-				// Register events.
-				this.buttonMonitor.ButtonPressed += 
-					() => ExecuteButtonCommand(this.buttonConfig.ButtonPressedCommand);
-				this.buttonMonitor.LidClosed +=
-					() => ExecuteButtonCommand(this.buttonConfig.LidClosedCommand);
-				this.buttonMonitor.LidOpened +=
-					() => ExecuteButtonCommand(this.buttonConfig.LidOpenedCommand);
+			// Register events.
+			this.buttonMonitor.ButtonPressed +=
+				() => ExecuteButtonCommand(this.buttonConfig.ButtonPressedCommand);
+			this.buttonMonitor.LidClosed +=
+				() => ExecuteButtonCommand(this.buttonConfig.LidClosedCommand);
+			this.buttonMonitor.LidOpened +=
+				() => ExecuteButtonCommand(this.buttonConfig.LidOpenedCommand);
 
-				// Start background thread listening for button state changes.
-				this.buttonMonitor.Start();
-				logger.Info("Monitoring Big Red Button device."); 
-			}
-
-			// Device not found, try again in 10 seconds.
-			catch (InvalidOperationException e)
-			{
-				logger.Warn("Big Red Button device not found. Will try again in 10 seconds.");
-				Thread.Sleep(10000);
-				StartMonitor();
-			}
-
-			// Some other problem with device.
-			catch (Exception e)
-			{
-				logger.Error(e.Message);
-			}
+			// Start background thread listening for button state changes.
+			this.buttonMonitor.Start();
+			logger.Info("Monitoring Big Red Button device.");
+			
 		}
 
 
@@ -101,8 +90,8 @@ namespace BigRedButtonService
 		/// </summary>
 		private void ExecuteButtonCommand(ButtonCommand buttonCommand)
 		{
-			//logger.Info(buttonCommand.Type + "-->" + buttonCommand.Command);
-			
+			logger.Info("EVENT");
+
 			// Command line command.
 			if (buttonCommand.Type == ButtonCommand.CommandType.CommandLine)
 			{
@@ -122,7 +111,6 @@ namespace BigRedButtonService
 			// HTTP request.
 			else if (buttonCommand.Type == ButtonCommand.CommandType.HttpRequest)
 			{
-				
 				Task.Run(() =>
 				{
 					try

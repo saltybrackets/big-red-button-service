@@ -3,7 +3,10 @@
 
 namespace BigRedButtonService
 {
-	public class ButtonCommand
+	/// <summary>
+	/// Encapsulates a command to be executed upon receiving events from Big Red Button device.
+	/// </summary>
+	public sealed class ButtonCommand
 	{
 
 		#region Fields

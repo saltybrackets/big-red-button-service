@@ -14,9 +14,10 @@ namespace BigRedButtonService
 		#region Constructors
 		public ConfigForm(ButtonController buttonController)
 		{
-			this.buttonController = buttonController;
-			this.buttonController.StartMonitor();
 			InitializeComponent();
+			this.buttonController = buttonController;
+			ProcessConfig();
+			this.buttonController.StartMonitor();
 		}
 		
 		private ConfigForm()
@@ -147,8 +148,61 @@ namespace BigRedButtonService
 			this.buttonController.ButtonConfig.LidOpenedCommand.Command = this.lidOpenedCommandTextbox.Text;
 		}
 		#endregion
-		
 
 
+		// Save button was clicked.
+		private void saveButton_Click(object sender, System.EventArgs e)
+		{
+			this.buttonController.ButtonConfig.Save();
+		}
+
+
+		// Update form to match loaded config.
+		private void ProcessConfig()
+		{
+			ButtonConfig config = this.buttonController.ButtonConfig;
+			
+			this.buttonPressedCommandTextbox.Text = config.ButtonPressedCommand.Command;
+			switch (config.ButtonPressedCommand.Type)
+			{
+				case ButtonCommand.CommandType.None:
+					this.buttonPressedNoneOption.Checked = true;
+					break;
+				case ButtonCommand.CommandType.CommandLine:
+					this.buttonPressedShellOption.Checked = true;
+					break;
+				case ButtonCommand.CommandType.HttpRequest:
+					this.buttonPressedHttpOption.Checked = true;
+					break;
+			}
+
+			this.lidClosedCommandTextbox.Text = config.LidClosedCommand.Command;
+			switch (config.LidClosedCommand.Type)
+			{
+				case ButtonCommand.CommandType.None:
+					this.lidClosedNoneOption.Checked = true;
+					break;
+				case ButtonCommand.CommandType.CommandLine:
+					this.lidClosedShellOption.Checked = true;
+					break;
+				case ButtonCommand.CommandType.HttpRequest:
+					this.lidClosedHttpOption.Checked = true;
+					break;
+			}
+
+			this.lidOpenedCommandTextbox.Text = config.LidOpenedCommand.Command;
+			switch (config.LidOpenedCommand.Type)
+			{
+				case ButtonCommand.CommandType.None:
+					this.lidOpenedNoneOption.Checked = true;
+					break;
+				case ButtonCommand.CommandType.CommandLine:
+					this.lidOpenedShellOption.Checked = true;
+					break;
+				case ButtonCommand.CommandType.HttpRequest:
+					this.lidOpenedHttpOption.Checked = true;
+					break;
+			}
+		}
 	}
 }

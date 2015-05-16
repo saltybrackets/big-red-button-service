@@ -6,13 +6,16 @@ using log4net;
 
 namespace BigRedButtonService
 {
+	/// <summary>
+	/// Object to interface with Dream Cheeky's Big Red Button device.
+	/// </summary>
     public sealed class BigRedButton
 	{
 
 		#region Constants
-		private const int DefaultVendorId = 0x1D34;
-		private const int DefaultProductId = 0x000D;
-		private readonly byte[] statusCommand = { 0, 0, 0, 0, 0, 0, 0, 0, 2 };
+		public const int DefaultVendorId = 0x1D34;
+		public const int DefaultProductId = 0x000D;
+		public static readonly byte[] StatusCommand = { 0, 0, 0, 0, 0, 0, 0, 0, 2 };
 		#endregion
 
 
@@ -28,18 +31,21 @@ namespace BigRedButtonService
 		/// </summary>
 		public void Close()
 		{
-			logger.Info("Button device closed.");
-			this.device.CloseDevice();
+			if (this.device != null)
+			{
+				this.device.CloseDevice();
+				logger.Info("Button device closed.");
+			}
+			
 		}
 
 
 		/// <summary>
 		/// Open communication with device.
 		/// </summary>
-		public void Open()
+		public bool Open()
 		{
-			logger.Info("Button device opened.");
-			Open(DefaultVendorId, DefaultProductId);
+			return Open(DefaultVendorId, DefaultProductId);
 		}
 
 
@@ -48,16 +54,18 @@ namespace BigRedButtonService
 		/// </summary>
 		/// <param name="vendorId">Numerical vendor ID.</param>
 		/// <param name="productId">Numerical product ID.</param>
-	    public void Open(int vendorId, int productId)
+	    public bool Open(int vendorId, int productId)
 	    {
 			this.device = HidDevices.Enumerate(vendorId, productId).FirstOrDefault();
 			if (this.device == null)
 			{
-				logger.Error("Button device not found.");
-				throw new InvalidOperationException("Device not found");
+				logger.Warn("Button device not found.");
+				return false;
 			}
 			
 			this.device.OpenDevice(DeviceMode.Overlapped, DeviceMode.Overlapped);
+			logger.Info("Button device opened.");
+			return true;
 	    }
 
 
@@ -67,13 +75,16 @@ namespace BigRedButtonService
 		/// <returns>Status of the button.</returns>
         public ButtonState GetStatus()
 		{
+			if (device == null)
+				return ButtonState.Inactive;
+			
 			if (!device.IsOpen)
 			{
 				logger.Error("Tried to read button state while device is closed.");
 				return ButtonState.Errored;
 			}
 
-			if (!device.Write(statusCommand, 100))
+			if (!device.Write(StatusCommand, 100))
 			{
 				logger.Error("Could not communicate with button device.");
 				return ButtonState.Errored;
