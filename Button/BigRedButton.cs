@@ -20,7 +20,7 @@ namespace BigRedButtonService
 
 
 		#region Fields
-	    private static ILog logger = LogManager.GetLogger(typeof (BigRedButton));
+	    //private static ILog logger = LogManager.GetLogger(typeof (BigRedButton));
 		
 		private HidDevice device;
 		#endregion
@@ -34,7 +34,7 @@ namespace BigRedButtonService
 			if (this.device != null)
 			{
 				this.device.CloseDevice();
-				logger.Info("Button device closed.");
+				//logger.Info("Button device closed.");
 			}
 			
 		}
@@ -59,12 +59,12 @@ namespace BigRedButtonService
 			this.device = HidDevices.Enumerate(vendorId, productId).FirstOrDefault();
 			if (this.device == null)
 			{
-				logger.Warn("Button device not found.");
+				//logger.Warn("Button device not found.");
 				return false;
 			}
 			
 			this.device.OpenDevice(DeviceMode.Overlapped, DeviceMode.Overlapped);
-			logger.Info("Button device opened.");
+			//logger.Info("Button device opened.");
 			return true;
 	    }
 
@@ -80,20 +80,20 @@ namespace BigRedButtonService
 			
 			if (!device.IsOpen)
 			{
-				logger.Error("Tried to read button state while device is closed.");
+				//logger.Error("Tried to read button state while device is closed.");
 				return ButtonState.Errored;
 			}
 
 			if (!device.Write(StatusCommand, 100))
 			{
-				logger.Error("Could not communicate with button device.");
+				//logger.Error("Could not communicate with button device.");
 				return ButtonState.Errored;
 			}
 
             HidDeviceData data = device.Read(100);
 			if (data.Status != HidDeviceData.ReadStatus.Success)
 			{
-				logger.Error("Device read timed out.");
+				//logger.Error("Device read timed out.");
 				return ButtonState.Errored;
 			}
 

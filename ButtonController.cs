@@ -90,8 +90,6 @@ namespace BigRedButtonService
 		/// </summary>
 		private void ExecuteButtonCommand(ButtonCommand buttonCommand)
 		{
-			logger.Info("EVENT");
-
 			// Command line command.
 			if (buttonCommand.Type == ButtonCommand.CommandType.CommandLine)
 			{

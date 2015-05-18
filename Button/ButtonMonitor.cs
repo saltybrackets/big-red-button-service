@@ -116,7 +116,7 @@ namespace BigRedButtonService
 			if (terminated)
 				return;
 
-			logger.Info("Trying to open device for communication...");
+			//logger.Info("Trying to open device for communication...");
 			
 			// Couldn't open, delay and retry.
 			if (!this.bigRedButton.Open())
