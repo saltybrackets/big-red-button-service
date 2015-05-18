@@ -28,6 +28,8 @@
 		/// </summary>
 		private void InitializeComponent()
 		{
+			this.components = new System.ComponentModel.Container();
+			System.ComponentModel.ComponentResourceManager resources = new System.ComponentModel.ComponentResourceManager(typeof(ConfigForm));
 			this.buttonPressedCommandTextbox = new System.Windows.Forms.TextBox();
 			this.buttonPressedGroup = new System.Windows.Forms.GroupBox();
 			this.buttonPressedTypeLabel = new System.Windows.Forms.Label();
@@ -50,9 +52,13 @@
 			this.lidClosedCommandLabel = new System.Windows.Forms.Label();
 			this.lidClosedCommandTextbox = new System.Windows.Forms.TextBox();
 			this.saveButton = new System.Windows.Forms.Button();
+			this.trayMenu = new System.Windows.Forms.ContextMenuStrip(this.components);
+			this.exitMenuItem = new System.Windows.Forms.ToolStripMenuItem();
+			this.trayIcon = new System.Windows.Forms.NotifyIcon(this.components);
 			this.buttonPressedGroup.SuspendLayout();
 			this.lidOpenedGroup.SuspendLayout();
 			this.lidClosedGroup.SuspendLayout();
+			this.trayMenu.SuspendLayout();
 			this.SuspendLayout();
 			// 
 			// buttonPressedCommandTextbox
@@ -307,8 +313,31 @@
 			this.saveButton.UseVisualStyleBackColor = true;
 			this.saveButton.Click += new System.EventHandler(this.saveButton_Click);
 			// 
+			// trayMenu
+			// 
+			this.trayMenu.Items.AddRange(new System.Windows.Forms.ToolStripItem[] {
+            this.exitMenuItem});
+			this.trayMenu.Name = "trayMenu";
+			this.trayMenu.Size = new System.Drawing.Size(93, 26);
+			// 
+			// exitMenuItem
+			// 
+			this.exitMenuItem.Name = "exitMenuItem";
+			this.exitMenuItem.Size = new System.Drawing.Size(92, 22);
+			this.exitMenuItem.Text = "Exit";
+			this.exitMenuItem.Click += new System.EventHandler(this.exitMenuItem_Click);
+			// 
+			// trayIcon
+			// 
+			this.trayIcon.ContextMenuStrip = this.trayMenu;
+			this.trayIcon.Icon = ((System.Drawing.Icon)(resources.GetObject("trayIcon.Icon")));
+			this.trayIcon.Text = "notifyIcon1";
+			this.trayIcon.Visible = true;
+			this.trayIcon.DoubleClick += new System.EventHandler(this.trayIcon_DoubleClick);
+			// 
 			// ConfigForm
 			// 
+			this.AcceptButton = this.saveButton;
 			this.AutoScaleDimensions = new System.Drawing.SizeF(6F, 13F);
 			this.AutoScaleMode = System.Windows.Forms.AutoScaleMode.Font;
 			this.ClientSize = new System.Drawing.Size(467, 337);
@@ -316,6 +345,7 @@
 			this.Controls.Add(this.lidClosedGroup);
 			this.Controls.Add(this.lidOpenedGroup);
 			this.Controls.Add(this.buttonPressedGroup);
+			this.Icon = ((System.Drawing.Icon)(resources.GetObject("$this.Icon")));
 			this.MaximizeBox = false;
 			this.MinimizeBox = false;
 			this.Name = "ConfigForm";
@@ -327,6 +357,7 @@
 			this.lidOpenedGroup.PerformLayout();
 			this.lidClosedGroup.ResumeLayout(false);
 			this.lidClosedGroup.PerformLayout();
+			this.trayMenu.ResumeLayout(false);
 			this.ResumeLayout(false);
 
 		}
@@ -355,6 +386,9 @@
 		private System.Windows.Forms.Label lidClosedCommandLabel;
 		private System.Windows.Forms.TextBox lidClosedCommandTextbox;
 		private System.Windows.Forms.Button saveButton;
+		private System.Windows.Forms.ContextMenuStrip trayMenu;
+		private System.Windows.Forms.ToolStripMenuItem exitMenuItem;
+		private System.Windows.Forms.NotifyIcon trayIcon;
 	}
 }
 

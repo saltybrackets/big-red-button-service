@@ -1,4 +1,5 @@
-﻿using System.Windows.Forms;
+﻿using System;
+using System.Windows.Forms;
 
 
 namespace BigRedButtonService
@@ -25,6 +26,28 @@ namespace BigRedButtonService
 			InitializeComponent();
 		}
 		#endregion
+
+
+		protected override void OnLoad(EventArgs eventArgs)
+		{
+			//this.Visible = false;
+			//this.ShowInTaskbar = false;
+			base.OnLoad(eventArgs);
+		}
+
+
+		protected override void OnFormClosing(FormClosingEventArgs e)
+		{
+			if (e.CloseReason == CloseReason.WindowsShutDown ||
+				e.CloseReason == CloseReason.ApplicationExitCall || 
+				e.CloseReason == CloseReason.TaskManagerClosing)
+			{
+				return;
+			}
+			e.Cancel = true;
+			
+			MinimizeToTray();
+		}
 
 
 		#region Button Pressed Group
@@ -150,10 +173,40 @@ namespace BigRedButtonService
 		#endregion
 
 
+		#region System Tray
+		private void exitMenuItem_Click(object sender, EventArgs e)
+		{
+			Application.Exit();
+		}
+
+
+		private void trayIcon_DoubleClick(object sender, EventArgs e)
+		{
+			Restore();
+		}
+		#endregion
+
+
+		public void MinimizeToTray()
+		{
+			this.Visible = false;
+			this.ShowInTaskbar = false;
+		}
+
+
+		public void Restore()
+		{
+			this.Visible = true;
+			this.ShowInTaskbar = true;
+			ProcessConfig();
+		}
+
+
 		// Save button was clicked.
 		private void saveButton_Click(object sender, System.EventArgs e)
 		{
 			this.buttonController.ButtonConfig.Save();
+			MinimizeToTray();
 		}
 
 
@@ -204,5 +257,7 @@ namespace BigRedButtonService
 					break;
 			}
 		}
+
+		
 	}
 }
