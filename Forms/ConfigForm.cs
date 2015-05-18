@@ -4,6 +4,9 @@ using System.Windows.Forms;
 
 namespace BigRedButtonService
 {
+	/// <summary>
+	/// Handles form interaction.
+	/// </summary>
 	public partial class ConfigForm : Form
 	{
 
@@ -13,6 +16,10 @@ namespace BigRedButtonService
 
 
 		#region Constructors
+		/// <summary>
+		/// Create a new ConfigForm.
+		/// </summary>
+		/// <param name="buttonController"></param>
 		public ConfigForm(ButtonController buttonController)
 		{
 			InitializeComponent();
@@ -21,6 +28,7 @@ namespace BigRedButtonService
 			this.buttonController.StartMonitor();
 		}
 		
+		// Used by VS Designer.
 		private ConfigForm()
 		{
 			InitializeComponent();
@@ -28,6 +36,29 @@ namespace BigRedButtonService
 		#endregion
 
 
+		/// <summary>
+		/// Hide form rather than destroying it,
+		/// so it runs in the background.
+		/// </summary>
+		public void MinimizeToTray()
+		{
+			this.Visible = false;
+			this.ShowInTaskbar = false;
+		}
+
+
+		/// <summary>
+		/// Make form visible again.
+		/// </summary>
+		public void Restore()
+		{
+			this.Visible = true;
+			this.ShowInTaskbar = true;
+			ProcessConfig();
+		}
+
+
+		#region Form Method Overrides
 		protected override void OnLoad(EventArgs eventArgs)
 		{
 			//this.Visible = false;
@@ -48,9 +79,10 @@ namespace BigRedButtonService
 			
 			MinimizeToTray();
 		}
+		#endregion
 
 
-		#region Button Pressed Group
+		#region Button Pressed Group Event Handlers
 		// Selected None radio button.
 		private void buttonPressedNoneOption_CheckedChanged(object sender, System.EventArgs e)
 		{
@@ -71,7 +103,7 @@ namespace BigRedButtonService
 		private void buttonPressedShellOption_CheckedChanged(object sender, System.EventArgs e)
 		{
 			if (this.buttonPressedShellOption.Checked)
-				this.buttonController.ButtonConfig.ButtonPressedCommand.Type = ButtonCommand.CommandType.CommandLine;
+				this.buttonController.ButtonConfig.ButtonPressedCommand.Type = ButtonCommand.CommandType.Shell;
 		}
 
 
@@ -91,7 +123,7 @@ namespace BigRedButtonService
 		#endregion
 
 
-		#region Lid Closed Group
+		#region Lid Closed Group Event Handlers
 		// Selected None radio button.
 		private void lidClosedNoneOption_CheckedChanged(object sender, System.EventArgs e)
 		{
@@ -112,7 +144,7 @@ namespace BigRedButtonService
 		private void lidClosedShellOption_CheckedChanged(object sender, System.EventArgs e)
 		{
 			if (this.lidClosedShellOption.Checked)
-				this.buttonController.ButtonConfig.LidClosedCommand.Type = ButtonCommand.CommandType.CommandLine;
+				this.buttonController.ButtonConfig.LidClosedCommand.Type = ButtonCommand.CommandType.Shell;
 		}
 
 
@@ -132,7 +164,7 @@ namespace BigRedButtonService
 		#endregion
 
 
-		#region Lid Opened Group
+		#region Lid Opened Group Event Handlers
 		// Selected None radio button.
 		private void lidOpenedNoneOption_CheckedChanged(object sender, System.EventArgs e)
 		{
@@ -153,7 +185,7 @@ namespace BigRedButtonService
 		private void lidOpenedShellOption_CheckedChanged(object sender, System.EventArgs e)
 		{
 			if (this.lidOpenedShellOption.Checked)
-				this.buttonController.ButtonConfig.LidOpenedCommand.Type = ButtonCommand.CommandType.CommandLine;
+				this.buttonController.ButtonConfig.LidOpenedCommand.Type = ButtonCommand.CommandType.Shell;
 		}
 
 
@@ -173,7 +205,7 @@ namespace BigRedButtonService
 		#endregion
 
 
-		#region System Tray
+		#region System Tray Event Handlers
 		private void exitMenuItem_Click(object sender, EventArgs e)
 		{
 			Application.Exit();
@@ -187,27 +219,14 @@ namespace BigRedButtonService
 		#endregion
 
 
-		public void MinimizeToTray()
-		{
-			this.Visible = false;
-			this.ShowInTaskbar = false;
-		}
-
-
-		public void Restore()
-		{
-			this.Visible = true;
-			this.ShowInTaskbar = true;
-			ProcessConfig();
-		}
-
-
+		#region Other Event Handlers
 		// Save button was clicked.
 		private void saveButton_Click(object sender, System.EventArgs e)
 		{
 			this.buttonController.ButtonConfig.Save();
 			MinimizeToTray();
 		}
+		#endregion
 
 
 		// Update form to match loaded config.
@@ -221,7 +240,7 @@ namespace BigRedButtonService
 				case ButtonCommand.CommandType.None:
 					this.buttonPressedNoneOption.Checked = true;
 					break;
-				case ButtonCommand.CommandType.CommandLine:
+				case ButtonCommand.CommandType.Shell:
 					this.buttonPressedShellOption.Checked = true;
 					break;
 				case ButtonCommand.CommandType.HttpRequest:
@@ -235,7 +254,7 @@ namespace BigRedButtonService
 				case ButtonCommand.CommandType.None:
 					this.lidClosedNoneOption.Checked = true;
 					break;
-				case ButtonCommand.CommandType.CommandLine:
+				case ButtonCommand.CommandType.Shell:
 					this.lidClosedShellOption.Checked = true;
 					break;
 				case ButtonCommand.CommandType.HttpRequest:
@@ -249,7 +268,7 @@ namespace BigRedButtonService
 				case ButtonCommand.CommandType.None:
 					this.lidOpenedNoneOption.Checked = true;
 					break;
-				case ButtonCommand.CommandType.CommandLine:
+				case ButtonCommand.CommandType.Shell:
 					this.lidOpenedShellOption.Checked = true;
 					break;
 				case ButtonCommand.CommandType.HttpRequest:
@@ -258,6 +277,5 @@ namespace BigRedButtonService
 			}
 		}
 
-		
 	}
 }

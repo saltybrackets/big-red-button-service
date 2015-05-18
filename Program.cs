@@ -4,7 +4,9 @@ using System.Windows.Forms;
 
 namespace BigRedButtonService
 {
-	
+	/// <summary>
+	/// Main entry point for application.
+	/// </summary>
 	static class Program
 	{
 		/// <summary>

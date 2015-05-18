@@ -1,6 +1,4 @@
-﻿using System;
-using System.Net.Http;
-using System.Threading;
+﻿using System.Net.Http;
 using System.Threading.Tasks;
 
 using log4net;
@@ -8,12 +6,19 @@ using log4net;
 
 namespace BigRedButtonService
 {
-	public class ButtonController
+	/// <summary>
+	/// Logic for handling button events.
+	/// </summary>
+	public sealed class ButtonController
 	{
 
 		#region Constants
+		/// <summary>
+		/// File where button config is stored.
+		/// </summary>
 		public const string ConfigFile = "config.ini";
 		#endregion
+
 
 		#region Fields
 		private static ILog logger = LogManager.GetLogger(typeof (ButtonController));
@@ -25,6 +30,9 @@ namespace BigRedButtonService
 
 
 		#region Constructors
+		/// <summary>
+		/// Create new ButtonController object.
+		/// </summary>
 		public ButtonController()
 		{
 			this.httpClient = new HttpClient();
@@ -34,17 +42,27 @@ namespace BigRedButtonService
 
 
 		#region Properties
+		/// <summary>
+		/// Button command configuration.
+		/// </summary>
 		public ButtonConfig ButtonConfig
 		{
 			get { return this.buttonConfig; }
 		}
 
 
+		/// <summary>
+		/// Button status monitoring on background thread.
+		/// </summary>
 		public ButtonMonitor ButtonMonitor
 		{
 			get { return this.buttonMonitor; }
 		}
 
+
+		/// <summary>
+		/// Client for sending HTTP requests.
+		/// </summary>
 		public HttpClient HttpClient
 		{
 			get { return this.httpClient; }
@@ -77,6 +95,9 @@ namespace BigRedButtonService
 		}
 
 
+		/// <summary>
+		/// Stop monitoring button status on background thread.
+		/// </summary>
 		public void StopMonitor()
 		{
 			this.buttonMonitor.Stop();
@@ -86,12 +107,12 @@ namespace BigRedButtonService
 
 		#region Event Handlers
 		/// <summary>
-		/// Fired when button is pressed.
+		/// Fired when button pressed, lid opened, or lid closed.
 		/// </summary>
 		private void ExecuteButtonCommand(ButtonCommand buttonCommand)
 		{
 			// Command line command.
-			if (buttonCommand.Type == ButtonCommand.CommandType.CommandLine)
+			if (buttonCommand.Type == ButtonCommand.CommandType.Shell)
 			{
 				Task.Run(() =>
 				{

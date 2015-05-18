@@ -1,11 +1,11 @@
 ﻿
 
-using System;
-using System.Windows.Forms.VisualStyles;
-
 
 namespace BigRedButtonService
 {
+	/// <summary>
+	/// Object for holding button commands.
+	/// </summary>
 	public sealed class ButtonConfig
 	{
 
@@ -115,7 +115,7 @@ namespace BigRedButtonService
 		}
 
 
-		// Easier way to prase CommandType enums from Ini string values.
+		// Simpler parsing of CommandType enums from Ini string values.
 		private ButtonCommand.CommandType ParseCommandType(string value)
 		{
 			ButtonCommand.CommandType commandType;

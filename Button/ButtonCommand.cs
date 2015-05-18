@@ -4,7 +4,7 @@
 namespace BigRedButtonService
 {
 	/// <summary>
-	/// Encapsulates a command to be executed upon receiving events from Big Red Button device.
+	/// Encapsulates a command to be executed.
 	/// </summary>
 	public sealed class ButtonCommand
 	{
@@ -16,6 +16,9 @@ namespace BigRedButtonService
 
 
 		#region Constructors
+		/// <summary>
+		/// Create a new ButtonCommand object.
+		/// </summary>
 		public ButtonCommand()
 		{
 			this.type = CommandType.None;
@@ -25,23 +28,29 @@ namespace BigRedButtonService
 
 
 		#region Events
+		/// <summary>
+		/// Raised whenever object values change.
+		/// </summary>
 		public event Action<ButtonCommand> Changed;
 		#endregion
 
 
 		#region Enums
+		/// <summary>
+		/// Type of command to be executed.
+		/// </summary>
 		public enum CommandType
 		{
 			None,
-			HttpRequest,
-			CommandLine
+			Shell,
+			HttpRequest
 		}
 		#endregion
 
 
 		#region Properties
 		/// <summary>
-		/// Type of command.
+		/// Type of command to execute.
 		/// </summary>
 		public CommandType Type
 		{

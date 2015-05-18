@@ -1,5 +1,4 @@
-﻿using System;
-using System.Linq;
+﻿using System.Linq;
 using HidLibrary;
 using log4net;
 
@@ -21,7 +20,6 @@ namespace BigRedButtonService
 
 		#region Fields
 	    //private static ILog logger = LogManager.GetLogger(typeof (BigRedButton));
-		
 		private HidDevice device;
 		#endregion
 
@@ -36,7 +34,6 @@ namespace BigRedButtonService
 				this.device.CloseDevice();
 				//logger.Info("Button device closed.");
 			}
-			
 		}
 
 
